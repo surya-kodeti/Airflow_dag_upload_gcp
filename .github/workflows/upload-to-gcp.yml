@@ -17,6 +17,17 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+        - name: Verify Authentication
+        run: gcloud auth list
+
+      - name: Set up Google Cloud SDK
+        run: |
+          gcloud config set project vertex-ai-testing
+          gcloud auth activate-service-account --key-file <(echo '${{ secrets.GCP_SA_KEY }}')
+
+      - name: Ensure GCS Bucket Permissions
+        run: |
+          gsutil iam ch serviceAccount:$(gcloud config get-value account):roles/storage.objectCreator gs://dp-airflow-dags
           
       - name: Upload DAGs to GCS
         run: |
