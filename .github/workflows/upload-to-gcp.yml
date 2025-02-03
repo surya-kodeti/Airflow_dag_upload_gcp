@@ -25,8 +25,8 @@ jobs:
 
       - name: Ensure GCS Bucket Permissions
         run: |
-          gsutil iam ch serviceAccount:$(gcloud config get-value account):roles/storage.objectCreator gs://dp-airflow-dags
+          gsutil iam ch serviceAccount:$(gcloud config get-value account):roles/storage.objectCreator gs://dp-dags-bucket
           
       - name: Upload DAGs to GCS
         run: |
-          gsutil -m cp -r ./dags gs://dp-airflow-dags/
+          gsutil -m cp -r ./dags gs://dp-dags-bucket/
